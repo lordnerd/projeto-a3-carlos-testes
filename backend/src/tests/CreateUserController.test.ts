@@ -3,17 +3,15 @@ import { CreateUserController } from '../controllers/users';
 import { users } from '../data/users';
 
 describe('Testar o módulo de criar usuário', () => {
-  let controller: CreateUserController;
+  const controller: CreateUserController = new CreateUserController();
   let req: Partial<Request>;
   let res: Partial<Response>;
   let statusMock: jest.Mock;
-  let sendMock: jest.Mock;
+  let jsonMock: jest.Mock;
 
   beforeEach(() => {
-    controller = new CreateUserController();
-
     statusMock = jest.fn().mockReturnThis();
-    sendMock = jest.fn();
+    jsonMock = jest.fn();
 
     req = {
       body: {
@@ -24,7 +22,7 @@ describe('Testar o módulo de criar usuário', () => {
     };
     res = {
       status: statusMock,
-      send: sendMock,
+      json: jsonMock,
     };
 
     users.length = 0; // limpa o array antes de cada teste
@@ -34,7 +32,7 @@ describe('Testar o módulo de criar usuário', () => {
     await controller.execute(req as Request, res as Response);
 
     expect(statusMock).toHaveBeenCalledWith(201);
-    expect(sendMock).toHaveBeenCalledWith('Usuário cadastrado com sucesso');
+    expect(jsonMock).toHaveBeenCalledWith('Usuário cadastrado com sucesso');
     expect(users).toHaveLength(1);
   });
 
@@ -49,6 +47,6 @@ describe('Testar o módulo de criar usuário', () => {
     await controller.execute(req as Request, res as Response);
 
     expect(statusMock).toHaveBeenCalledWith(400);
-    expect(sendMock).toHaveBeenCalledWith('Usuário já cadastrado');
+    expect(jsonMock).toHaveBeenCalledWith('Usuário já cadastrado');
   });
 });
