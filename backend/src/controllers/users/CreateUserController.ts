@@ -24,6 +24,6 @@ export class CreateUserController {
 
     users.push(newUser);
 
-    res.status(201).send('Usuário cadastrado com sucesso');
+    res.status(201).json('Usuário cadastrado com sucesso');
   }
 }

@@ -15,6 +15,6 @@ export class CreateBookController {
       stock,
     };
     books.push(newBook);
-    res.status(201).send('Livro cadastrado com sucesso');
+    res.status(201).json('Livro cadastrado com sucesso');
   }
 }
