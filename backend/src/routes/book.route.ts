@@ -1,23 +1,26 @@
-import express from 'express';
-import { books } from '../data/books';
-import { Book } from '../models/Book';
+import { Router } from 'express';
+import { AppRouter } from './AppRouter';
+import {
+  BuyBookController,
+  CreateBookController,
+  FindAllBooksController,
+} from '../controllers';
 
-const router = express.Router();
+const createBookController = new CreateBookController();
+const findAllBooksController = new FindAllBooksController();
+const buyBookController = new BuyBookController();
 
-router.post('/add', (req, res) => {
-  const { title, author, stock } = req.body;
-  const newBook: Book = {
-    id: books.length + 1,
-    title,
-    author,
-    stock
+function routes(): AppRouter {
+  const router = Router();
+
+  router.post('/', createBookController.execute);
+  router.get('/', findAllBooksController.execute);
+  router.patch('/buy/:id', buyBookController.execute);
+
+  return {
+    path: '/books',
+    router,
   };
-  books.push(newBook);
-  res.status(201).send('Livro cadastrado com sucesso');
-});
+}
 
-router.get('/', (req, res) => {
-  res.send(books);
-});
-
-export default router;
+export const bookRoutes = routes();

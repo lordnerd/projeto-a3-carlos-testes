@@ -10,7 +10,10 @@ export class CreateUserController {
     const { name, email, password } = req.body;
 
     const exists = users.find((u) => u.email === email);
-    if (exists) return res.status(400).send('Usuário já cadastrado');
+
+    if (exists) {
+      return res.status(400).json('Usuário já cadastrado');
+    }
 
     const newUser: User = {
       id: users.length + 1,
@@ -20,6 +23,7 @@ export class CreateUserController {
     };
 
     users.push(newUser);
+
     res.status(201).send('Usuário cadastrado com sucesso');
   }
 }

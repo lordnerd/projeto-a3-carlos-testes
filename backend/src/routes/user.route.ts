@@ -8,7 +8,7 @@ const createUserController = new CreateUserController();
 function routes(): AppRouter {
   const router = Router();
 
-  router.post('/register', createUserController.execute);
+  router.post('/', createUserController.execute);
 
   return {
     path: '/users',

@@ -11,8 +11,11 @@ export class LoginController {
     const user = users.find(
       (u) => u.email === email && u.password === password,
     );
-    if (!user) return res.status(401).send('Email ou senha incorretos');
 
-    res.send('Login realizado com sucesso');
+    if (!user) {
+      return res.status(401).json('Email ou senha incorretos');
+    }
+
+    res.status(200).json('Login realizado com sucesso');
   }
 }
