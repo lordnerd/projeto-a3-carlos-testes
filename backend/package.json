@@ -4,7 +4,9 @@
   "main": "dist/index.js",
   "scripts": {
     "start": "nodemon src/index.ts",
-    "test": "jest"
+    "test": "jest",
+    "tsc": "tsc",
+    "tsc:check": "npm run tsc -- --noEmit --skipLibCheck"
   },
   "dependencies": {
     "cors": "^2.8.5",

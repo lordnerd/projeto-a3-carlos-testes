@@ -1,16 +1,16 @@
 import { Request, Response } from 'express';
-import { RegisterController } from '../controllers/users';
+import { CreateUserController } from '../controllers/users';
 import { users } from '../data/users';
 
-describe('RegisterController', () => {
-  let controller: RegisterController;
+describe('Testar o módulo de criar usuário', () => {
+  let controller: CreateUserController;
   let req: Partial<Request>;
   let res: Partial<Response>;
   let statusMock: jest.Mock;
   let sendMock: jest.Mock;
 
   beforeEach(() => {
-    controller = new RegisterController();
+    controller = new CreateUserController();
 
     statusMock = jest.fn().mockReturnThis();
     sendMock = jest.fn();
@@ -30,7 +30,7 @@ describe('RegisterController', () => {
     users.length = 0; // limpa o array antes de cada teste
   });
 
-  it('should register a new user', async () => {
+  it('deve registrar um novo usuário', async () => {
     await controller.execute(req as Request, res as Response);
 
     expect(statusMock).toHaveBeenCalledWith(201);
@@ -38,7 +38,7 @@ describe('RegisterController', () => {
     expect(users).toHaveLength(1);
   });
 
-  it('should return 400 if user already exists', async () => {
+  it('deve retornar erro 400 para caso o usuário já exista', async () => {
     users.push({
       id: 1,
       name: 'Test User',
