@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
@@ -5,3 +6,12 @@
   },
   "include": ["tests"]
 }
+=======
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": ["jest"]
+  },
+  "include": ["tests"]
+}
+>>>>>>> 0be6e85e4f4b5d87dec36ff5e8a3b39a25aa1046
