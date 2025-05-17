@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 
 import { users } from '../../data/users';
 import { User } from '../../models/User';
+import { Errors } from '../../errors';
 
 export class CreateUserController {
   constructor() {}
@@ -12,7 +13,7 @@ export class CreateUserController {
     const exists = users.find((u) => u.email === email);
 
     if (exists) {
-      return res.status(400).json('Usuário já cadastrado');
+      return res.status(400).json(Errors.USER_EMAIL_ALREADY_EXISTS);
     }
 
     const newUser: User = {

@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
-import { CreateUserController } from '../../controllers/users';
-import { users } from '../../data/users';
+import { CreateUserController } from '../../../controllers/users';
+import { users } from '../../../data/users';
+import { Errors } from '../../../errors';
 
 describe('Testar o módulo de criar usuário', () => {
   const controller: CreateUserController = new CreateUserController();
@@ -25,7 +26,7 @@ describe('Testar o módulo de criar usuário', () => {
       json: jsonMock,
     };
 
-    users.length = 0; // limpa o array antes de cada teste
+    users.length = 0;
   });
 
   it('deve registrar um novo usuário', async () => {
@@ -47,6 +48,6 @@ describe('Testar o módulo de criar usuário', () => {
     await controller.execute(req as Request, res as Response);
 
     expect(statusMock).toHaveBeenCalledWith(400);
-    expect(jsonMock).toHaveBeenCalledWith('Usuário já cadastrado');
+    expect(jsonMock).toHaveBeenCalledWith(Errors.USER_EMAIL_ALREADY_EXISTS);
   });
 });

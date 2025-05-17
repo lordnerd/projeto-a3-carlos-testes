@@ -1,0 +1,16 @@
+export const Errors = {
+  INVALID_LOGIN: 'Usuário e/ou senha inválidos',
+  UNEXPECTED: 'Erro inesperado',
+  INVALID_TOKEN: 'Token Inválido!',
+  EXPIRED_TOKEN: 'Token expirado! Solicite uma nova recuperação de senha!',
+  TOKEN_NOT_FOUND: 'Token não informado!',
+  UNAUTHORIZED: 'Você não tem permissão para realizar essa ação',
+  OBJECT_NOT_FOUND: 'Entidade não encontrada',
+  ID_NOT_FOUND: 'O ID é obrigatório',
+  USER_NOT_FOUND: 'Usuário não encontrado',
+  USER_EMAIL_ALREADY_EXISTS: 'Já existe um usuário com o e-mail informado',
+  BOOK_NOT_FOUND: 'Livro não encontrado',
+  BOOK_TITLE_ALREADY_EXISTS: 'Já existe um livro com o título informado',
+  BOOK_ID_NOT_FOUND: 'O ID do livro é obrigatório',
+  BOOK_OUT_OF_STOCK: 'O livro se encontra fora de estoque',
+} as const;

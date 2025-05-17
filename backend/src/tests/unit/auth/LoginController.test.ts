@@ -1,5 +1,6 @@
-import { LoginController } from '../../controllers/auth';
-import { users } from '../../data/users';
+import { LoginController } from '../../../controllers/auth';
+import { users } from '../../../data/users';
+import { Errors } from '../../../errors';
 
 describe('LoginController', () => {
   let controller: LoginController;
@@ -55,6 +56,6 @@ describe('LoginController', () => {
     await controller.execute(mockRequest, mockResponse);
 
     expect(status).toHaveBeenCalledWith(401);
-    expect(json).toHaveBeenCalledWith('Email ou senha incorretos');
+    expect(json).toHaveBeenCalledWith(Errors.INVALID_LOGIN);
   });
 });

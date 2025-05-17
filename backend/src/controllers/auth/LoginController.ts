@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
 import { users } from '../../data/users';
+import { Errors } from '../../errors';
 
 export class LoginController {
   constructor() {}
@@ -13,7 +14,7 @@ export class LoginController {
     );
 
     if (!user) {
-      return res.status(401).json('Email ou senha incorretos');
+      return res.status(401).json(Errors.INVALID_LOGIN);
     }
 
     res.status(200).json('Login realizado com sucesso');

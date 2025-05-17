@@ -1,5 +1,6 @@
-import { BuyBookController } from '../../controllers/books/BuyBookController';
-import { books } from '../../data/books';
+import { BuyBookController } from '../../../controllers/books/BuyBookController';
+import { books } from '../../../data/books';
+import { Errors } from '../../../errors';
 
 describe('BuyBookController', () => {
   let controller: BuyBookController;
@@ -27,7 +28,7 @@ describe('BuyBookController', () => {
     await controller.execute(mockReq, mockRes);
 
     expect(mockRes.status).toHaveBeenCalledWith(404);
-    expect(mockRes.json).toHaveBeenCalledWith('Livro não encontrado');
+    expect(mockRes.json).toHaveBeenCalledWith(Errors.BOOK_NOT_FOUND);
   });
 
   it('deve retornar 400 se o livro estiver fora de estoque', async () => {
@@ -44,7 +45,7 @@ describe('BuyBookController', () => {
     await controller.execute(mockReq, mockRes);
 
     expect(mockRes.status).toHaveBeenCalledWith(400);
-    expect(mockRes.json).toHaveBeenCalledWith('Livro fora de estoque');
+    expect(mockRes.json).toHaveBeenCalledWith(Errors.BOOK_OUT_OF_STOCK);
 
     // Remove o livro de teste após o teste
     books.pop();

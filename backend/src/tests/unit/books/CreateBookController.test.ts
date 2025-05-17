@@ -1,5 +1,5 @@
-import { CreateBookController } from '../../controllers/books';
-import { books } from '../../data/books';
+import { CreateBookController } from '../../../controllers/books';
+import { books } from '../../../data/books';
 
 describe('CreateBookController', () => {
   let controller: CreateBookController;

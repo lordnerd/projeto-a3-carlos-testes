@@ -2,6 +2,7 @@ import { LoginController } from '../../controllers/auth/LoginController';
 import { BuyBookController } from '../../controllers/books/BuyBookController';
 import { users } from '../../data/users';
 import { books } from '../../data/books';
+import { Errors } from '../../errors';
 
 describe('Integração LoginController + BuyBookController', () => {
   let loginController: LoginController;
@@ -77,7 +78,7 @@ describe('Integração LoginController + BuyBookController', () => {
     await loginController.execute(mockReq, mockRes);
 
     expect(mockRes.status).toHaveBeenCalledWith(401);
-    expect(mockRes.json).toHaveBeenCalledWith('Email ou senha incorretos');
+    expect(mockRes.json).toHaveBeenCalledWith(Errors.INVALID_LOGIN);
 
     // Mesmo com erro no login, tentaremos comprar o livro
     jest.clearAllMocks();

@@ -1,4 +1,11 @@
 {
   "liveServer.settings.multiRootWorkspaceName": "projeto-a3-carlos-testes",
-  "files.autoSave": "onFocusChange"
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "files.autoSave": "onFocusChange",
+  "prettier.singleQuote": true,
+  "prettier.jsxSingleQuote": true,
+  "prettier.vueIndentScriptAndStyle": true,
+  "editor.tabSize": 2,
+  "prettier.arrowParens": "always"
 }
