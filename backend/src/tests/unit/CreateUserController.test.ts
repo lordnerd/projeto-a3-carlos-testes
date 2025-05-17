@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { CreateUserController } from '../controllers/users';
-import { users } from '../data/users';
+import { CreateUserController } from '../../controllers/users';
+import { users } from '../../data/users';
 
 describe('Testar o módulo de criar usuário', () => {
   const controller: CreateUserController = new CreateUserController();

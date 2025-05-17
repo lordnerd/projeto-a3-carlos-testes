@@ -1,7 +1,7 @@
-import { LoginController } from '../controllers/auth/LoginController';
-import { BuyBookController } from '../controllers/books/BuyBookController';
-import { users } from '../data/users';
-import { books } from '../data/books';
+import { LoginController } from '../../controllers/auth/LoginController';
+import { BuyBookController } from '../../controllers/books/BuyBookController';
+import { users } from '../../data/users';
+import { books } from '../../data/books';
 
 describe('Integração LoginController + BuyBookController', () => {
   let loginController: LoginController;
@@ -26,8 +26,18 @@ describe('Integração LoginController + BuyBookController', () => {
 
   it('deve permitir login e compra de livro com sucesso', async () => {
     // Configura usuário e livro para o teste
-    users.push({ id: 1, name:'User 1', email: 'user@test.com', password: '1234' });
-    books.push({ id: 10, title: 'Livro Integração', author:'Autor Teste', stock: 2 });
+    users.push({
+      id: 1,
+      name: 'User 1',
+      email: 'user@test.com',
+      password: '1234',
+    });
+    books.push({
+      id: 10,
+      title: 'Livro Integração',
+      author: 'Autor Teste',
+      stock: 2,
+    });
 
     // Fase 1 - Login
     mockReq = { body: { email: 'user@test.com', password: '1234' } };
@@ -43,8 +53,10 @@ describe('Integração LoginController + BuyBookController', () => {
     mockReq = { params: { id: '10' } };
     await buyBookController.execute(mockReq, mockRes);
 
-    expect(mockRes.json).toHaveBeenCalledWith('Compra realizada com sucesso: Livro Integração');
-    expect(books.find(b => b.id === 10)?.stock).toBe(1);
+    expect(mockRes.json).toHaveBeenCalledWith(
+      'Compra realizada com sucesso: Livro Integração',
+    );
+    expect(books.find((b) => b.id === 10)?.stock).toBe(1);
 
     // Cleanup
     users.pop();
@@ -53,7 +65,12 @@ describe('Integração LoginController + BuyBookController', () => {
 
   it('não deve permitir compra de livro se login falhar', async () => {
     // Adiciona livro sem adicionar usuário válido
-    books.push({ id: 20, author: 'Autor Teste 2', title: 'Livro Sem Login', stock: 1 });
+    books.push({
+      id: 20,
+      author: 'Autor Teste 2',
+      title: 'Livro Sem Login',
+      stock: 1,
+    });
 
     // Fase 1 - Login com credenciais erradas
     mockReq = { body: { email: 'errado@test.com', password: 'wrong' } };
@@ -69,8 +86,10 @@ describe('Integração LoginController + BuyBookController', () => {
     await buyBookController.execute(mockReq, mockRes);
 
     // Compra será permitida porque o fluxo atual não valida login no controller
-    expect(mockRes.json).toHaveBeenCalledWith('Compra realizada com sucesso: Livro Sem Login');
-    expect(books.find(b => b.id === 20)?.stock).toBe(0);
+    expect(mockRes.json).toHaveBeenCalledWith(
+      'Compra realizada com sucesso: Livro Sem Login',
+    );
+    expect(books.find((b) => b.id === 20)?.stock).toBe(0);
 
     // Cleanup
     books.pop();

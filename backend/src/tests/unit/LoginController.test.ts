@@ -1,5 +1,5 @@
-import { LoginController } from '../controllers/auth';
-import { users } from '../data/users';
+import { LoginController } from '../../controllers/auth';
+import { users } from '../../data/users';
 
 describe('LoginController', () => {
   let controller: LoginController;
