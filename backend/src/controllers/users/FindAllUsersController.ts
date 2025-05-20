@@ -6,6 +6,6 @@ export class FindAllUsersController {
   constructor() {}
 
   async execute(req: Request, res: Response) {
-    res.status(201).json(users);
+    res.status(200).json(users);
   }
 }

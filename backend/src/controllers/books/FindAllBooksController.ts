@@ -6,6 +6,6 @@ export class FindAllBooksController {
   constructor() {}
 
   async execute(req: Request, res: Response) {
-    res.status(201).json(books);
+    res.status(200).json(books);
   }
 }

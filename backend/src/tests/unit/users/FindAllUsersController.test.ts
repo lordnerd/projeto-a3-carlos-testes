@@ -32,14 +32,14 @@ describe('Testar o módulo de listar todos os usuários', () => {
         name: 'Usuário 2',
         email: 'user2@example.com',
         password: 'senha2',
-      },
+      }
     );
   });
 
-  it('deve retornar todos os usuários com status 201', async () => {
+  it('deve retornar todos os usuários com status 200', async () => {
     await controller.execute(req as Request, res as Response);
 
-    expect(statusMock).toHaveBeenCalledWith(201);
+    expect(statusMock).toHaveBeenCalledWith(200);
     expect(jsonMock).toHaveBeenCalledWith(users);
     expect(jsonMock).toHaveBeenCalledTimes(1);
   });
