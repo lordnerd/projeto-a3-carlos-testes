@@ -14,7 +14,6 @@ describe('Integração LoginController + BuyBookController', () => {
     loginController = new LoginController();
     buyBookController = new BuyBookController();
 
-    // Mock response padrão
     mockRes = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
@@ -26,7 +25,7 @@ describe('Integração LoginController + BuyBookController', () => {
   });
 
   it('deve permitir login e compra de livro com sucesso', async () => {
-    // Configura usuário e livro para o teste
+    // Configura usuário e livro
     users.push({
       id: 1,
       name: 'User 1',
@@ -47,25 +46,26 @@ describe('Integração LoginController + BuyBookController', () => {
     expect(mockRes.status).toHaveBeenCalledWith(200);
     expect(mockRes.json).toHaveBeenCalledWith('Login realizado com sucesso');
 
-    // Reset de mocks para separar as fases
+    // Reset de mocks
     jest.clearAllMocks();
 
-    // Fase 2 - Compra de livro
-    mockReq = { params: { id: '10' } };
+    // Fase 2 - Compra com usuário autenticado
+    mockReq = {
+      params: { id: '10' },
+      user: { id: 1 }, // simulação de usuário autenticado
+    };
     await buyBookController.execute(mockReq, mockRes);
 
     expect(mockRes.json).toHaveBeenCalledWith(
-      'Compra realizada com sucesso: Livro Integração',
+      'Compra realizada com sucesso: Livro Integração'
     );
     expect(books.find((b) => b.id === 10)?.stock).toBe(1);
 
-    // Cleanup
     users.pop();
     books.pop();
   });
 
   it('não deve permitir compra de livro se login falhar', async () => {
-    // Adiciona livro sem adicionar usuário válido
     books.push({
       id: 20,
       author: 'Autor Teste 2',
@@ -73,26 +73,26 @@ describe('Integração LoginController + BuyBookController', () => {
       stock: 1,
     });
 
-    // Fase 1 - Login com credenciais erradas
+    // Fase 1 - Login inválido
     mockReq = { body: { email: 'errado@test.com', password: 'wrong' } };
     await loginController.execute(mockReq, mockRes);
 
     expect(mockRes.status).toHaveBeenCalledWith(401);
     expect(mockRes.json).toHaveBeenCalledWith(Errors.INVALID_LOGIN);
 
-    // Mesmo com erro no login, tentaremos comprar o livro
     jest.clearAllMocks();
 
-    mockReq = { params: { id: '20' } };
+    // Fase 2 - Compra sem autenticação
+    mockReq = {
+      params: { id: '20' },
+      // sem req.user => simula não autenticado
+    };
     await buyBookController.execute(mockReq, mockRes);
 
-    // Compra será permitida porque o fluxo atual não valida login no controller
-    expect(mockRes.json).toHaveBeenCalledWith(
-      'Compra realizada com sucesso: Livro Sem Login',
-    );
-    expect(books.find((b) => b.id === 20)?.stock).toBe(0);
+    expect(mockRes.status).toHaveBeenCalledWith(401);
+    expect(mockRes.json).toHaveBeenCalledWith(Errors.UNAUTHORIZED);
+    expect(books.find((b) => b.id === 20)?.stock).toBe(1);
 
-    // Cleanup
     books.pop();
   });
 });

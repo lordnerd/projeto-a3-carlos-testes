@@ -6,6 +6,12 @@ export class BuyBookController {
   constructor() {}
 
   async execute(req: Request, res: Response) {
+    const user = (req as any).user; // simulação de req.user
+
+    if (!user) {
+      return res.status(401).json(Errors.UNAUTHORIZED);
+    }
+
     const bookId = parseInt(req.params.id);
     const book = books.find((b) => b.id === bookId);
 
@@ -17,7 +23,6 @@ export class BuyBookController {
     }
 
     book.stock -= 1;
-
     res.json(`Compra realizada com sucesso: ${book.title}`);
   }
 }

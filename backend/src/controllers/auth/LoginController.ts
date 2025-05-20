@@ -10,7 +10,7 @@ export class LoginController {
     const { email, password } = req.body;
 
     const user = users.find(
-      (u) => u.email === email && u.password === password,
+      (u) => u.email === email && u.password === password
     );
 
     if (!user) {

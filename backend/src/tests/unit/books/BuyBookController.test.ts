@@ -10,7 +10,6 @@ describe('BuyBookController', () => {
   beforeEach(() => {
     controller = new BuyBookController();
 
-    // Mock res
     mockRes = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
@@ -18,12 +17,23 @@ describe('BuyBookController', () => {
   });
 
   afterEach(() => {
-    // Limpa mocks
     jest.clearAllMocks();
   });
 
+  it('deve retornar 401 se o usuário não estiver autenticado', async () => {
+    mockReq = { params: { id: '1234' } }; // sem req.user
+
+    await controller.execute(mockReq, mockRes);
+
+    expect(mockRes.status).toHaveBeenCalledWith(401);
+    expect(mockRes.json).toHaveBeenCalledWith(Errors.UNAUTHORIZED);
+  });
+
   it('deve retornar 404 se o livro não for encontrado', async () => {
-    mockReq = { params: { id: '9999' } }; // ID inexistente
+    mockReq = {
+      params: { id: '9999' },
+      user: { id: 1 }, // simula usuário autenticado
+    };
 
     await controller.execute(mockReq, mockRes);
 
@@ -32,7 +42,6 @@ describe('BuyBookController', () => {
   });
 
   it('deve retornar 400 se o livro estiver fora de estoque', async () => {
-    // Adiciona um livro de teste com estoque 0
     books.push({
       id: 1234,
       title: 'Livro Teste',
@@ -40,19 +49,20 @@ describe('BuyBookController', () => {
       stock: 0,
     });
 
-    mockReq = { params: { id: '1234' } };
+    mockReq = {
+      params: { id: '1234' },
+      user: { id: 1 }, // simula usuário autenticado
+    };
 
     await controller.execute(mockReq, mockRes);
 
     expect(mockRes.status).toHaveBeenCalledWith(400);
     expect(mockRes.json).toHaveBeenCalledWith(Errors.BOOK_OUT_OF_STOCK);
 
-    // Remove o livro de teste após o teste
     books.pop();
   });
 
   it('deve decrementar o estoque e retornar sucesso ao comprar o livro', async () => {
-    // Adiciona um livro de teste com estoque 2
     books.push({
       id: 5678,
       title: 'Livro Comprável',
@@ -60,16 +70,18 @@ describe('BuyBookController', () => {
       stock: 2,
     });
 
-    mockReq = { params: { id: '5678' } };
+    mockReq = {
+      params: { id: '5678' },
+      user: { id: 1 }, // simula usuário autenticado
+    };
 
     await controller.execute(mockReq, mockRes);
 
     expect(mockRes.json).toHaveBeenCalledWith(
-      'Compra realizada com sucesso: Livro Comprável',
+      'Compra realizada com sucesso: Livro Comprável'
     );
     expect(books.find((b) => b.id === 5678)?.stock).toBe(1);
 
-    // Remove o livro de teste após o teste
     books.pop();
   });
 });
