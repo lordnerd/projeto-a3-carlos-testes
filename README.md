@@ -34,7 +34,7 @@ O sistema é dividido em duas partes:
 - **Node.js**
 - **Express**
 - **TypeScript**
-- **Jest** para testes unitários
+- **Jest** para testes unitários e de integração
 - **ts-node**
 - **Nodemon**
 
